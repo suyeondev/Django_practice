@@ -1,0 +1,16 @@
+li a {
+    color : green ;
+}
+
+table {
+    width : 100% ;
+}
+
+table , th , td {
+    border : 1px solid black ;
+}
+
+#result {
+    text-align : center ;
+    color : red ;
+}

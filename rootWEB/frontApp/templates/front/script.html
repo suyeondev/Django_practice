@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+<body>
+    script page..
+    <hr/>
+    <div id="msg">
+        그냥 메시지 입니다~~~
+    </div>
+    <button id ="btn">click</button>
+    <hr/>
+    <fieldset>
+            <legend>개인정보</legend>
+            <label for="fname">First Name : </label><br/>
+            <input type = "text" name = "fname" id="fname"><br/>
+            <label for="lname">Last Name : </label><br/>
+            <input type = "text" name = "lname" id="lname"><p/>
+            <button id="openBtn">open</button><button id="closeBtn">close</button>
+            <button id="getBtn">get</button>
+    </fieldset>
+    <hr/>
+    <div id = "result"></div>
+    <button id = "resultBtn">click</button>
+    <fieldset>
+            <legend>비동기 통신(AJAX)</legend>
+            <select id="maker">
+                <option>선택하세요</option>
+                <option value ="bmw">BMW</option>
+                <option value="audi">AUDI</option>
+                <option value="benz">BENZ</option>
+
+            </select>
+            <select id="model">
+                <option>선택하세요</option>
+            </select><br/>
+            <input type = "text" name = "id" id="id"><br/>
+            <button id="ajaxBtn">아이디 중복체크</button>
+            <div id= "idChk"></div>
+    </fieldset>
+
+    <script>
+        name='조수연'
+        obj = { id : 'suyeon', pwd : 'suyeon'}
+        list = [
+            { id: 'suyeon01', pwd : 'suyeon01'},
+            { id: 'suyeon02', pwd : 'suyeon02'}
+        ]
+
+        bmwAry =['320d','520d','640d','750d']
+        audiAry=['a4','a6','a8','rs8']
+        benzAry=['c200','e300','s500','s580']
+        function display(ary){
+            txt = '<option>선택하세요</option>'
+            $.each(ary, function(idx, data) {
+                txt += '<option>'+data+'</option>'
+            })
+            $('#model').empty().append(txt)
+        }
+
+        $(document).ready(function(){
+            $('#maker').change(function() {
+                //alert( $('#maker').val())
+                maker= $('#maker').val()
+                if(maker == 'bmw'){
+                    display(bmwAry)
+                }else if(maker == 'audi'){
+                    display(audiAry)
+                }else if(maker == 'benz'){
+                    display(benzAry)
+                }else {
+                    txt = '<option>선택하세요</option>'
+                    $('#model').empty().append(txt)
+                }
+            })
+
+            $('#btn').click(function() {
+                $('#msg').text('변경해보겠습니다~')
+            })
+
+            $('#closeBtn').click(function(){
+                $('#fname'.prop('disabled','disabled'))
+                $('#lname'.prop('disabled','disabled'))
+            })
+            $('#openBtn').click(function(){
+                $('#fname'.prop('disabled',''))
+                $('#lname'.prop('disabled',''))
+            })
+            $('#getBtn').click(function() {
+                fname = $('.fname').val()
+                lname = $('.lname').val()
+                alert(fname+", " +lname)
+            })
+            $('#resultBtn').click(function() {
+                {# text(),  html() #}
+                //$('#result').html('<h1>'+name+'<h1>')
+                //$('#result').text(obj.id + ', '+ obj.pwd)
+                $.each(list, function(idx, obj){
+                    $('#result').append(idx + ' , '+obj.id +' , '+ obj.pwd+'<br/>')
+                })
+
+            })
+            $('#ajaxBtn').click(function() {
+                alert($('#id').val())
+                $.ajax({
+                    url : "../idChkAjax/",
+                    type : 'post' ,
+                    data : {    'csrfmiddlewaretoken' : '{{csrf_token}}',
+                                id : $('#id').val() },
+                    dataType : 'json' ,
+                    success  : function(list) {
+                        alert(list)
+
+                    }
+                })
+            })
+
+
+        })
+    </script>
+
+</body>
+</html>

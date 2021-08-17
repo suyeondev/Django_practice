@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'front/css/style.css' %}">
+</head>
+<body>
+    static_page...
+    <p/>
+    <li><a href="">외부 스타일시트 적용</a></li>
+    <p/>
+    <img src="{% static 'front/img/avatar.png' %}"/>
+     <table style ="width:100%" id = "tbl01">
+        <tr>
+            <th>First Name</th><th>Last Name</th><th>Age</th>
+        </tr>
+        <tr>
+            <td>수연</td><td>조</td><td>25</td>
+        </tr>
+        <tr>
+            <td>형진</td><td>조</td><td>22</td>
+        </tr>
+    </table>
+    <div id="result">
+
+    </div>
+</body>
+</html>

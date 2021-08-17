@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table, th, td {
+            border : 1px solid blue;
+        }
+        th, td {
+        padding : 15px
+        }
+        th {
+            text-align : left ;
+        }
+        table{
+            border-spacing : 5px
+        }
+        #tbl01{
+            width : 50% ;
+            background-color : red;
+        }
+    </style>
+</head>
+<body>
+    frontApp index...
+    <hr/>
+    <form action ="../action_page" method = "post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>개인정보</legend>
+            <label for="fname">First Name : </label><br/>
+            <input type = "text" name = "fname"><br/>
+            <label for="lname">Last Name : </label><br/>
+            <input type = "text" name = "lname"><p/>
+        </fieldset>
+        <input type = "radio" name="language" value="html"><label for="html">HTML</label><br/>
+        <input type = "radio" name="language" value="css"><label for="css">CSS</label><br/>
+        <input type = "radio" name="language" value="javascript"><label for="javascript">JABASCRIPT</label><br/>
+        <hr/>
+        <input type ="checkbox" name="vechile01" value="bike"><label for = "vechile">Bike</label><br/>
+        <input type ="checkbox" name="vechile02" value="car"><label for = "vechile">Car</label><br/>
+        <input type ="checkbox" name="vechile03" value="boat"><label for = "vechile">Boat</label><br/>
+        <hr/>
+
+        <select name ="cars">
+            <option value="audi">Audi</option>
+            <option value="bmw">BMW</option>
+            <option value="benz">Benz</option>
+            <option value="volvo">Volvo</option>
+        </select>
+        <hr/>
+        <textarea name ="msg"></textarea>
+        <hr/>
+        <input type ="hidden" name ="hide" value="jslim">
+        <hr/>
+        <label for="phone">Enter your phone Number  : </label><br/>
+        <input type = "tel" name = "phone", placeholder ="xxx-xxxx-xxxx" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"><br/>
+
+        <input type ="submit" value="SEND">
+    </form>
+    <p/><p/><p/>
+    ::Table
+    <table style ="width:100%" id = "tbl01">
+        <tr>
+            <th>First Name</th><th>Last Name</th><th>Age</th>
+        </tr>
+        <tr>
+            <td>수연</td><td>조</td><td>25</td>
+        </tr>
+        <tr>
+            <td>형진</td><td>조</td><td>22</td>
+        </tr>
+    </table>
+    <hr/>
+    :::List
+    <ol>
+        <li>아구찜</li>
+        <li>비빔밥</li>
+        <li>짬뽕</li>
+        <li>새우튀김</li>
+    </ol>
+    <hr/>
+    <form>
+        <input list="browsers">
+        <datalist id = "browsers">
+            <option value ="firefox"/>
+            <option value ="chrome"/>
+            <option value ="safari"/>
+            <option value ="explorer"/>
+        </datalist>
+    </form>
+    <hr/>
+    <ul>
+        <li><a href="../script_page/">script Index</a></li>
+    </ul>
+
+</body>
+</html>
