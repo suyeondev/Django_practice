@@ -15,15 +15,13 @@ def index(request):
         return render(request, 'bbs/home.html',context)
     return render(request, 'bbs/login.html')
 
-def list(request):
-    print('bbsApp list~~')
-    return render(request, 'bbs/list.html')
+
 
 
 # select * from bbsuser where user_id = x and user_pwd= x;
-# orm : modelName.object.get()
+# orm : modelName.objects.get()
 # select * from bbsuser;
-# orm : modelName.object.all()
+# orm : modelName.objects.all()
 def login(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -61,5 +59,64 @@ def join(request):
         name = request.POST['name']
 
         BbsUser(user_id=id, user_pwd=pwd, user_name = name).save()
-        print('user result:', join)
+
     return redirect('main')
+# post
+# SQL : select * from tableName
+# ORM : modelName.objects.all()
+# list.html -> {% for %} {% endfor %}
+def list(request):
+    print('bbsApp list~~')
+    # model과 연동
+    boards = Bbs.objects.all()
+    print('boards result:',type(boards), boards)
+    context = {'boards': boards,
+               'session_user_name'  : request.session['user_name'],
+               'session_user_id'    : request.session['user_id']
+               }
+
+    return render(request, 'bbs/list.html',context)
+
+def bbsForm(request):
+    print('bbsApp bbsForm~')
+    context = {
+               'session_user_name': request.session['user_name'],
+               'session_user_id': request.session['user_id']
+               }
+
+    return render(request,'bbs/bbsRegisterForm.html',context)
+
+def bbsRegister(request):
+    print('bbs regist~')
+    if request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        writer = request.POST['writer']
+        print('bbsApp bbsRegister param:', title, content, writer)
+
+        board = Bbs(title=title, content=content, writer=writer)
+        board.save()
+
+        return redirect('list')
+
+def bbsRead(request,id):
+    print('bbsRead~~~')
+    # model과 작업이 필요
+    board=Bbs.objects.get(id=id)
+    board.viewcnt = board.viewcnt + 1 # 조회수부분.
+    board.save()
+    print('board result:',board)
+
+    context = {
+        'board':board,
+        'session_user_name': request.session['user_name'],
+        'session_user_id': request.session['user_id']
+    }
+    return render(request, 'bbs/read.html',context)
+
+def bbsRemove(request):
+    id = request.GET['id']
+    print('remove param: ' ,id)
+    board = Bbs.objects.get(id=id)
+    board.delete()
+    return redirect('list')

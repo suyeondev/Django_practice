@@ -18,8 +18,8 @@
 				</div>
 				<!-- /.box-header -->
 
-<form role="form" method="post" action="OOO">
-   
+<form role="form" method="post" action="../bbs_register/">
+   {% csrf_token %}
 
 	<div class="box-body">
 		<div class="form-group">
@@ -35,7 +35,7 @@
 		<div class="form-group">
 			<label for="exampleInputEmail1">Writer</label> 
 			<input type="text"
-				name="writer" class="form-control" readonly value="OOO">
+				name="writer" class="form-control" readonly value="{{session_user_name}}">
 		</div>
 	</div>
 	<!-- /.box-body -->
@@ -58,7 +58,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-
+<
 {% endblock %}
 {% include 'footer.html' %}
 
