@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from .models import *
@@ -120,3 +121,42 @@ def bbsRemove(request):
     board = Bbs.objects.get(id=id)
     board.delete()
     return redirect('list')
+
+def bbsUpdate(request):
+    id = request.GET['id']
+    title=request.GET['title']
+    content = request.GET['content']
+    board = Bbs.objects.get(id=id)
+    board.title=title
+    board.content=content
+    board.save()
+    return redirect('list')
+
+# ajax - json
+# title - keyword
+# writer - keyword
+# select * from tableName where title like '%공지%'
+# model.objects.filter(title__icontains='공지')
+# select * from tableName where title like '공지%'
+# model.objects.filter(title__startswith='공지')
+# select * from tableName where title like '%공지'
+# model.objects.filter(title__endswith='공지')
+def bbsSearch(request):
+    print('bbsApp bbsSearch!!')
+    type=request.POST['type']
+    keyword=request.POST['keyword']
+    print('param:',type, keyword)
+    if type=='title':
+        boards = Bbs.objects.filter(title__icontains=keyword)
+    if type== 'writer':
+        boards = Bbs.objects.filter(writer__startswith=keyword)
+    boardList=[]
+    for board in boards:
+        boardList.append({
+            'id':board.id,
+            'title':board.title,
+            'writer':board.writer,
+            'regdate':board.regdate,
+            'viewcnt':board.viewcnt
+        })
+    return JsonResponse(boardList,safe=False)

@@ -15,7 +15,12 @@
 					<h3 class="box-title">Board List</h3>
 				</div>
 				<div class='box-body'>
-					
+					<select id="searchType">
+						<option value="title">제목</option>
+						<option value="writer">작성자</option>
+					</select>
+					<input type="text" id = "searchKeyword"/>
+					<button id ="searchBtn">Search</button>
 					<button id='newBtn'>New Board</button>
 				
 				</div>
@@ -77,6 +82,27 @@
 		$("#newBtn").click(function() {
 			//alert('btn click');
 			location.href='../bbs_registerForm';
+		})
+		$("#searchBtn").click(function(){
+			$.ajax({
+				url:"{% url 'bbs_search' %}",
+				type : 'POST',
+				data : {	'csrfmiddlewaretoken' : '{{csrf_token}}',
+                                type : $('#searchType').val(),
+                                keyword : $('#searchKeyword').val()},
+                dataType: 'json',
+				success  : function(list) {
+						var txt = "";
+						$.each(list , function(idx, obj) {
+							txt +="<tr><td>"+obj.id+"</td>" ;
+							txt +="<td><a href=../bbs_read/"+obj.id+">"+obj.title+"</a></td>";
+							txt +="<td>"+obj.writer+"</td>";
+							txt +="<td>"+obj.regdate+"</td>";
+							txt +="<td><span class='badge bg-red'>"+obj.viewcnt+"</span></td></tr>" ;
+						});
+						$("#tbody").empty().append(txt);
+				}
+			})
 		})
 	})
 

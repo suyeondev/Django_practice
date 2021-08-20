@@ -13,7 +13,8 @@ urlpatterns = [
     path('bbs_registerForm/',views.bbsForm, name='bbs_registerForm'),
     path('bbs_register/', views.bbsRegister, name='bbs_register'),
     path('bbs_read/<int:id>', views.bbsRead, name='bbs_read'),
-    path('bbs_remove/', views.bbsRemove, name='bbs_remove')
-
+    path('bbs_remove/', views.bbsRemove, name='bbs_remove'),
+    path('bbs_update/',views.bbsUpdate, name='bbs_update'),
+    path('bbs_search/',views.bbsSearch, name='bbs_search')
 
 ]
