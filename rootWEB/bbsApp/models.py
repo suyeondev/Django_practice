@@ -19,3 +19,9 @@ class Bbs(models.Model):
     content = models.TextField()
     regdate = models.DateTimeField(default=timezone.now)
     viewcnt = models.IntegerField(default=0)
+
+class Timeline(models.Model):
+    # id
+    txt = models.CharField(max_length=500)
+    writer = models.CharField(max_length=100)
+    board_id = models.IntegerField()

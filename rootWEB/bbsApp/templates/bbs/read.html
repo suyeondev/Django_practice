@@ -54,30 +54,59 @@
 			</div>
 			<div class="box-body">
 				<label for="writer">Writer</label>
-				<input type="text" class="form-control" value="{{session_user_name}}" readonly/>
+				<input type="text" class="form-control" id="time_writer" value="{{session_user_name}}" readonly/>
 				<label for="writer">ADD Text</label>
-				<input type="text" class="form-control" />
+				<input type="text" class="form-control" id="time_txt" />
 			</div>
 			<div class="box-footer">
-				<button>ADD</button>
+				<button id="replyBtn">ADD</button>
 			</div>
 		</div>
 		<ul class="timeline">
 			<li class="time-label" >
-				<span class="bg-green">timeline list<small>[00]</small></span>
+				<span class="bg-green">timeline list<small id ="cnt">[00]</small></span>
 			</li>
 		</ul>
-		<ul>
-			<li class="time-label" >
-				타임라인 게시글 출력하는 영역
-				<a class="btn-primary btn-xs">X</a>
+
+		<ul id="reply_result">
+			{% for line in lines %}
+			<li class="time-label">
+				{{ line.txt }}
+				{% if line.writer == session_user_name %}
+					<a href="javascript:removeReply({{line.id}},{{line.board_id}})" class = "btn btn-primary btn-xs">X</a>
+				{% endif %}
 			</li>
+			{% endfor %}
 		</ul>
 	</div>
 </div>
 
 <script>
-				
+function removeReply(id, board_id){
+	//alert(id+" ,"+board_id)
+	$.ajax({
+		url:"../bbs_line_remove/",
+		type : 'POST',
+		data : {	'csrfmiddlewaretoken' : '{{csrf_token}}',
+                     id : id,
+                     board_id:board_id},
+        dataType: 'json',
+        success  : function(list) {
+					$('#cnt').text('['+list.length+']')
+					txt=""
+					$.each(list, function(idx,data){
+						txt+="<li class='time-label'>"
+						txt+=data.txt+"&nbsp;&nbsp;&nbsp;"
+						if(data.writer=='{{session_user_name}}'){
+							txt+="<a class='btn btn-primary btn-xs'>X</a>"
+						}
+						txt+="</li>"
+					})
+					$('#reply_result').html(txt)
+
+        }
+	})
+}
 $(document).ready(function(){
 	$('#listBtn').click(function(){
 		location.href="{% url 'list' %}";
@@ -88,6 +117,35 @@ $(document).ready(function(){
 	$('#updateBtn').click(function(){
 
 		location.href="../bbs_update/?id="+$('#id').val()+'&title='+$('#title').val()+'&content='+$('#content').val();
+	})
+	$('#replyBtn').click(function(){
+		//alert($('#time_writer').val())
+		//alert($('#time_txt').val())
+		//alert($('#id').val())
+		$.ajax({
+				url:"{% url 'bbs_reply' %}",
+				type : 'POST',
+				data : {	'csrfmiddlewaretoken' : '{{csrf_token}}',
+                                time_writer : $('#time_writer').val(),
+                                time_txt : $('#time_txt').val(),
+                                board_id : $('#id').val(),
+                        },
+                dataType: 'json',
+				success  : function(list) {
+					$('#cnt').text('['+list.length+']')
+					txt=""
+					$.each(list, function(idx,data){
+						txt+="<li class='time-label'>"
+						txt+=data.txt+"&nbsp;&nbsp;&nbsp;"
+						if(data.writer=='{{session_user_name}}'){
+							txt+="<a class='btn btn-primary btn-xs'>X</a>"
+						}
+						txt+="</li>"
+					})
+					$('#reply_result').html(txt)
+				}
+			})
+
 	})
 });
 

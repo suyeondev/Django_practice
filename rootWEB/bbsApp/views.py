@@ -106,12 +106,15 @@ def bbsRead(request,id):
     board=Bbs.objects.get(id=id)
     board.viewcnt = board.viewcnt + 1 # 조회수부분.
     board.save()
+    # timeline
+    lines=Timeline.objects.filter(board_id=board.id)
     print('board result:',board)
 
     context = {
         'board':board,
         'session_user_name': request.session['user_name'],
-        'session_user_id': request.session['user_id']
+        'session_user_id': request.session['user_id'],
+        'lines':lines
     }
     return render(request, 'bbs/read.html',context)
 
@@ -160,3 +163,47 @@ def bbsSearch(request):
             'viewcnt':board.viewcnt
         })
     return JsonResponse(boardList,safe=False)
+
+def bbsReply(request):
+    print('bbsApp bbsReply!')
+    time_writer=request.POST['time_writer']
+    time_txt=request.POST['time_txt']
+    board_id=request.POST['board_id']
+    print('param:',time_writer,time_txt,board_id)
+    line = Timeline(writer=time_writer,txt=time_txt,board_id=board_id)
+    line.save()
+    lines= Timeline.objects.filter(board_id = board_id)
+    print('lines result', type(lines), lines)
+    timeList=[]
+    for l in lines:
+        timeList.append({
+            'id' : l.board_id,
+            'writer': l.writer,
+            'txt': l.txt
+        })
+
+    return JsonResponse(timeList, safe=False)
+
+def bbsLineRemove(request):
+    print('bbsApp bbsLineRemove!')
+    id = request.POST['id']
+    board_id=request.POST['board_id']
+    print('param :',id,board_id)
+    line = Timeline.objects.get(id=id)
+    line.delete()
+    lines = Timeline.objects.filter(board_id=board_id)
+    print('lines result', type(lines), lines)
+    timeList = []
+    for l in lines:
+        timeList.append({
+            'id': l.board_id,
+            'writer': l.writer,
+            'txt': l.txt
+        })
+
+    return JsonResponse(timeList, safe=False)
+
+    # timeline delete
+    # timeline filter
+    # {{}}
+    # jsonResponse()

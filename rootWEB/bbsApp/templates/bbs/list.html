@@ -84,7 +84,14 @@
 			location.href='../bbs_registerForm';
 		})
 		$("#searchBtn").click(function(){
-			$.ajax({
+
+		})
+	})
+
+</script>
+
+{% endblock %}
+{% include 'footer.html' %}$.ajax({
 				url:"{% url 'bbs_search' %}",
 				type : 'POST',
 				data : {	'csrfmiddlewaretoken' : '{{csrf_token}}',
@@ -103,13 +110,6 @@
 						$("#tbody").empty().append(txt);
 				}
 			})
-		})
-	})
-
-</script>
-
-{% endblock %}
-{% include 'footer.html' %}
 
 
 

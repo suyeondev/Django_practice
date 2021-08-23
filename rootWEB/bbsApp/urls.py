@@ -15,6 +15,8 @@ urlpatterns = [
     path('bbs_read/<int:id>', views.bbsRead, name='bbs_read'),
     path('bbs_remove/', views.bbsRemove, name='bbs_remove'),
     path('bbs_update/',views.bbsUpdate, name='bbs_update'),
-    path('bbs_search/',views.bbsSearch, name='bbs_search')
+    path('bbs_search/',views.bbsSearch, name='bbs_search'),
+    path('bbs_reply/',views.bbsReply,name='bbs_reply'),
+    path('bbs_line_remove/',views.bbsLineRemove,name='bbs_line_remove'),
 
 ]
