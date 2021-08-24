@@ -19,4 +19,8 @@ urlpatterns = [
     path('bbs_reply/',views.bbsReply,name='bbs_reply'),
     path('bbs_line_remove/',views.bbsLineRemove,name='bbs_line_remove'),
 
+    #csv
+    path('csvToModel/',views.csvToModel, name='csvToModel'),
+    path('upload/',views.upload, name='upload')
+
 ]

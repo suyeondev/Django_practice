@@ -25,3 +25,9 @@ class Timeline(models.Model):
     txt = models.CharField(max_length=500)
     writer = models.CharField(max_length=100)
     board_id = models.IntegerField()
+
+# csv->model
+class CsvToModel(models.Model):
+    nickName = models.CharField(max_length=50)
+    profileImg = models.CharField(max_length=50)
+    marriage = models.CharField(max_length=50)

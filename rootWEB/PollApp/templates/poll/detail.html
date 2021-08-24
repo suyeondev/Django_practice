@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{question.question_text}}</h1>
+    <hr/>
+    <form method="post" action="../main/{{question.id}}/vote/">
+        {% csrf_token %}
+
+        <input type="hidden" name="question_id" value="{{question.id}}" />
+        {% for choice in question.choice_set.all %}
+            <input  type="radio"
+                    name="choice"
+                    id="choice{{forloop.counter}}"
+                    value="{{choice.id}}"/>
+            <label for="choice{{forloop.counter}}">{{choice.choice_text}}</label><br/>
+            <p/>
+        {% endfor %}
+        <input type="submit" value="VOTE">
+    </form>
+</body>
+</html>

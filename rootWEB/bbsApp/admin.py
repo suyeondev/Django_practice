@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(BbsUser)
 admin.site.register(Bbs)
 admin.site.register(Timeline)
+admin.site.register(CsvToModel)

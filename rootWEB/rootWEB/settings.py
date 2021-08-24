@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'frontApp',
     'chartApp',
     'bbsApp',
+    'PollApp',
 ]
 
 MIDDLEWARE = [

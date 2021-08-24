@@ -1,7 +1,8 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 
 from .models import *
+import csv
 
 # Create your views here.
 def index(request):
@@ -207,3 +208,35 @@ def bbsLineRemove(request):
     # timeline filter
     # {{}}
     # jsonResponse()
+
+def csvToModel(request):
+    path='c:/DB/upload.csv'
+    file=open(path)
+    reader = csv.reader(file)
+    print('reader----------',reader)
+    csvList=[]
+    for row in reader:
+        print('row------',row)
+        csvList.append(CsvToModel(nickName=row[0],
+                                   profileImg=row[1],
+                                   marriage=row[2]))
+        CsvToModel.objects.bulk_create(csvList)
+        return HttpResponse('create model ok')
+
+def upload(request):
+    file=request.FILES['csv_file']
+    print('request upload:',file)
+    if not file.name.endswith('.csv'):
+        print('csv 파일이 아닙니다')
+        return redirect('main')
+    result = file.read().decode('utf-8').splitlines()
+    print('result:',type(result),result)
+    reader=csv.reader(result)
+    csvList=[]
+    for row in reader:
+        print('row---',row)
+        csvList.append(CsvToModel(nickName=row[0],
+                                  profileImg=row[1],
+                                  marriage=row[2]))
+    CsvToModel.objects.bulk_create(csvList)
+    return redirect('main')
